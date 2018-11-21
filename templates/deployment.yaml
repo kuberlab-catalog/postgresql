@@ -133,7 +133,11 @@ spec:
         persistentVolumeClaim:
           claimName: {{ .Values.persistence.existingClaim | default (include "postgresql.fullname" .) }}
       {{- else }}
+      {{- if .Values.persistence.volume }}
+{{ toYaml .Values.persistence.volume | indent 8 }}
+      {{- else }}
         emptyDir: {}
+      {{- end }}
       {{- end }}
       {{- if and .Values.metrics.enabled .Values.metrics.customMetrics }}
       - name: custom-metrics
